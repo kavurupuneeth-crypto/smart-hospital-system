@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
+import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Landing from './pages/Landing';
 import RoleSelection from './pages/RoleSelection';
@@ -20,6 +21,7 @@ import Profile from './pages/patient/Profile';
 import DoctorManagement from './pages/admin/DoctorManagement';
 import PatientManagement from './pages/admin/PatientManagement';
 import AppointmentManagement from './pages/admin/AppointmentManagement';
+import WaitingQueue from './pages/admin/WaitingQueue';
 import Analytics from './pages/admin/Analytics';
 import ResourceManagement from './pages/admin/ResourceManagement';
 import AdminSettings from './pages/admin/AdminSettings';
@@ -44,9 +46,10 @@ function App() {
     }
   }, []);
   return (
-    <AuthProvider>
-      <AppProvider>
-        <Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppProvider>
+          <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/role-selection" element={<RoleSelection />} />
@@ -82,6 +85,7 @@ function App() {
               <Route path="doctors" element={<DoctorManagement />} />
               <Route path="patients" element={<PatientManagement />} />
               <Route path="appointments" element={<AppointmentManagement />} />
+              <Route path="waiting-queue" element={<WaitingQueue />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="resources" element={<ResourceManagement />} />
               <Route path="settings" element={<AdminSettings />} />
@@ -89,9 +93,10 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Router>
-      </AppProvider>
-    </AuthProvider>
+          </Router>
+        </AppProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
