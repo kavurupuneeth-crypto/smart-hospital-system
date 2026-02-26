@@ -2,23 +2,30 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import DashboardHeader from '../components/DashboardHeader';
+import { useTheme } from '../context/ThemeContext';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { theme } = useTheme();
+
+  const themeClasses = {
+    default: 'bg-gray-50',
+    light: 'bg-white',
+    dark: 'bg-gray-900'
+  };
 
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/admin' },
-    { label: 'Doctors', icon: '👨⚕️', path: '/admin/doctors' },
-    { label: 'Patients', icon: '👥', path: '/admin/patients' },
-    { label: 'Appointments', icon: '📅', path: '/admin/appointments' },
-    { label: 'Analytics', icon: '📈', path: '/admin/analytics' },
-    { label: 'Resource Management', icon: '🏥', path: '/admin/resources' },
-    { label: 'Control Room', icon: '🎛️', path: '/admin/control-room' },
-    { label: 'Settings', icon: '⚙️', path: '/admin/settings' }
+    { label: 'Dashboard', icon: 'dashboard', path: '/admin' },
+    { label: 'Doctors', icon: 'medical_services', path: '/admin/doctors' },
+    { label: 'Patients', icon: 'people', path: '/admin/patients' },
+    { label: 'Appointments', icon: 'event', path: '/admin/appointments' },
+    { label: 'Waiting Queue', icon: 'schedule', path: '/admin/waiting-queue' },
+    { label: 'Analytics', icon: 'analytics', path: '/admin/analytics' },
+    { label: 'Settings', icon: 'settings', path: '/admin/settings' }
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className={`flex h-screen ${themeClasses[theme] || themeClasses.default}`}>
       <Sidebar menuItems={menuItems} isOpen={sidebarOpen} />
       
       <div className={`flex-1 flex flex-col transition-all ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
