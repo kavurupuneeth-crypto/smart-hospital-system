@@ -73,146 +73,142 @@ const Login = () => {
   };
 
   return (
-    <>
-      <style>
-        {`
-          @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .animate-slide-up-fade {
-            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-        `}
-      </style>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/60 via-white to-slate-50 flex flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#A7C7E7] to-[#6FA3D2] flex items-center justify-center p-4">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate('/role-selection')}
+        className="absolute top-6 left-6 flex items-center gap-2 text-white hover:text-gray-100 transition-colors group"
+      >
+        <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span className="font-semibold">Back</span>
+      </button>
 
-        {/* Decorative Background Elements */}
-        <div className="absolute top-0 left-1/2 -ml-[30rem] -mt-20 blur-3xl opacity-40 pointer-events-none">
-          <div className={`aspect-[1097/845] w-[60rem] bg-gradient-to-tr ${config.gradient} opacity-20`} style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
+      {/* Main Card */}
+      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2">
+        {/* Left Side - Illustration */}
+        <div className="relative bg-gradient-to-br from-[#4A90E2] to-[#357ABD] p-8 flex flex-col justify-center items-center overflow-hidden">
+          {/* Animated Background Shapes */}
+          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 left-10 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+          
+          <div className="relative z-10 text-center text-white">
+            {/* Animated Healthcare Illustration */}
+            <div className="mb-8">
+              <svg className="w-64 h-64 mx-auto" viewBox="0 0 300 300" fill="none">
+                {/* Heartbeat Monitor */}
+                <g className="animate-pulse">
+                  <rect x="50" y="100" width="200" height="120" rx="15" fill="white" opacity="0.95"/>
+                  <path d="M70 160 L100 160 L110 140 L120 180 L130 160 L230 160" stroke="#4A90E2" strokeWidth="4" fill="none" className="animate-pulse"/>
+                  <circle cx="90" cy="130" r="4" fill="#4CAF50" className="animate-ping"/>
+                  <circle cx="200" cy="130" r="4" fill="#4CAF50" className="animate-ping" style={{animationDelay: '0.5s'}}/>
+                </g>
+                
+                {/* Floating Heart */}
+                <g className="animate-bounce" style={{animationDuration: '2s'}}>
+                  <path d="M150 80 C150 80 130 60 110 60 C90 60 80 75 80 90 C80 110 95 125 150 160 C205 125 220 110 220 90 C220 75 210 60 190 60 C170 60 150 80 150 80 Z" fill="#FF6B6B" opacity="0.9"/>
+                  <circle cx="130" cy="75" r="3" fill="white" opacity="0.8"/>
+                </g>
+                
+                {/* Medical Cross */}
+                <g className="animate-pulse" style={{animationDelay: '0.3s'}}>
+                  <circle cx="240" cy="200" r="25" fill="white" opacity="0.9"/>
+                  <rect x="235" y="185" width="10" height="30" rx="2" fill="#4A90E2"/>
+                  <rect x="225" y="195" width="30" height="10" rx="2" fill="#4A90E2"/>
+                </g>
+                
+                {/* Pills */}
+                <g className="animate-bounce" style={{animationDuration: '3s', animationDelay: '0.5s'}}>
+                  <ellipse cx="60" cy="220" rx="15" ry="8" fill="white" opacity="0.9" transform="rotate(-30 60 220)"/>
+                  <ellipse cx="75" cy="235" rx="15" ry="8" fill="white" opacity="0.9" transform="rotate(20 75 235)"/>
+                </g>
+              </svg>
+            </div>
+            
+            <h1 className="text-6xl font-bold mb-4">Welcome Back</h1>
+            <p className="text-xl text-white/90">Please enter your details to continue</p>
+          </div>
         </div>
 
-        <div className="w-full max-w-md mx-auto relative z-10 animate-slide-up-fade">
-
-          <div className="text-center mb-8">
-            <button
-              onClick={() => navigate('/role-selection')}
-              className="text-slate-500 hover:text-blue-600 font-medium transition-colors duration-300 inline-flex items-center gap-2 group mb-6"
-            >
-              <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back
-            </button>
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Welcome Back</h2>
-            <p className="text-slate-500 font-medium text-lg">Login to access your dashboard</p>
+        {/* Right Side - Login Form */}
+        <div className="p-12 flex flex-col justify-center">
+          {/* Logo */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">SmartCare Flow</h2>
+            <div className={`inline-flex items-center gap-2 mt-2 px-3 py-1 rounded-full ${config.badgeBg} ${config.badgeText} text-sm`}>
+              {config.icon}
+              <span className="font-semibold">{config.title}</span>
+            </div>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-2xl sm:shadow-slate-200/50 overflow-hidden border border-slate-100/60 p-8 sm:p-10 relative">
+          <form onSubmit={handleLogin} className="space-y-5">
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                {error}
+              </div>
+            )}
 
-            {/* Role Badge Indicator */}
-            <div className={`absolute top-0 right-0 m-6 flex items-center gap-2 px-3 py-1.5 rounded-full ${config.badgeBg} ${config.badgeText} text-sm font-bold shadow-sm`}>
-              {config.icon}
-              {config.title}
+            {/* Email Input */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Username or Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all"
+                placeholder={`${role}@test.com`}
+                required
+                disabled={loading}
+              />
             </div>
 
-            <form onSubmit={handleLogin} className="mt-8 space-y-6">
+            {/* Password Input */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all"
+                placeholder="Enter your password"
+                required
+                disabled={loading}
+              />
+            </div>
 
-              {/* Error Message */}
-              {error && (
-                <div className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-100 rounded-xl flex items-start gap-3 text-red-700 shadow-sm animate-slide-up-fade">
-                  <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-sm font-medium">{error}</span>
-                </div>
-              )}
+            {/* Forgot Password */}
+            <div className="text-right">
+              <button type="button" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                Forgot password?
+              </button>
+            </div>
 
-              {/* Email Input */}
-              <div>
-                <label className="block text-slate-700 font-semibold mb-2 text-sm">Email Address</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 text-slate-900 font-medium placeholder-slate-400"
-                    placeholder={`${role}@test.com`}
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+            {/* Login Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Signing In...' : 'Login'}
+            </button>
 
-              {/* Password Input */}
-              <div>
-                <label className="block text-slate-700 font-semibold mb-2 text-sm">Password</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  </div>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 text-slate-900 font-medium hover:bg-white placeholder-slate-400"
-                    placeholder="Enter your password"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
-
-              {/* Submit Buttons */}
-              <div className="pt-2 flex flex-col gap-3">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full bg-gradient-to-r ${config.gradient} text-white py-3.5 rounded-xl font-bold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-2 group`}
-                >
-                  {loading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Signing In...
-                    </>
-                  ) : (
-                    <>
-                      Login
-                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </>
-                  )}
-                </button>
-                <div className="relative flex items-center py-2">
-                  <div className="flex-grow border-t border-slate-200"></div>
-                  <span className="flex-shrink-0 mx-4 text-slate-400 text-sm font-medium">or</span>
-                  <div className="flex-grow border-t border-slate-200"></div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => navigate('/register')}
-                  className="w-full bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all duration-300 hover:shadow-sm"
-                >
-                  Create an account
-                </button>
-              </div>
-
-            </form>
-          </div>
-
-
+            {/* Register Link */}
+            <p className="text-center text-gray-600 text-sm mt-6">
+              Don't have an account?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/register')}
+                className="text-blue-600 font-semibold hover:text-blue-700"
+              >
+                Register Now
+              </button>
+            </p>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
