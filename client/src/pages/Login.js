@@ -49,10 +49,18 @@ const Login = () => {
     try {
       const response = await axiosInstance.post('/auth/login', {
         email,
-        password
+        password,
+        requestedRole: role
       });
 
       const { token, user } = response.data;
+
+      // Verify role matches the portal
+      if (user.role !== role) {
+        setError(`This account is registered as ${user.role}. Please use the ${user.role} portal.`);
+        setLoading(false);
+        return;
+      }
 
       localStorage.setItem('token', token);
       localStorage.setItem('role', user.role);

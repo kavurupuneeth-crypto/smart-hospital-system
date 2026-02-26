@@ -21,6 +21,11 @@ const AdminLayout = () => {
     { label: 'Appointments', icon: 'event', path: '/admin/appointments' },
     { label: 'Waiting Queue', icon: 'schedule', path: '/admin/waiting-queue' },
     { label: 'Analytics', icon: 'analytics', path: '/admin/analytics' },
+    { label: 'Patients', icon: 'group', path: '/admin/patients' },
+    { label: 'Appointments', icon: 'event', path: '/admin/appointments' },
+    { label: 'Analytics', icon: 'analytics', path: '/admin/analytics' },
+    { label: 'Resource Management', icon: 'inventory_2', path: '/admin/resources' },
+    { label: 'Control Room', icon: 'monitoring', path: '/admin/control-room' },
     { label: 'Settings', icon: 'settings', path: '/admin/settings' }
   ];
 

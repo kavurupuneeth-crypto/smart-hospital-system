@@ -68,11 +68,60 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Styles */
+.theme-dark body {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #f3f4f6;
+}
+
+.theme-dark .bg-white {
+  background-color: #374151 !important;
+}
+
+.theme-dark .text-gray-800,
+.theme-dark .text-gray-900 {
+  color: #f3f4f6 !important;
+}
+
+.theme-dark .text-gray-600,
+.theme-dark .text-gray-700 {
+  color: #d1d5db !important;
+}
+
+.theme-dark .border-gray-200,
+.theme-dark .border-gray-300 {
+  border-color: #4b5563 !important;
+}
+
+.theme-dark .bg-gray-50 {
+  background-color: #4b5563 !important;
+}
+
+.theme-light body {
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.theme-default body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+  color: #1f2937;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Material Symbols Icon Animation */
+.material-symbols-rounded {
+  transition: transform 0.2s ease;
+}
+
+.group:hover .material-symbols-rounded {
+  transform: scale(1.1);
 }
 
 /* Custom scrollbar */
