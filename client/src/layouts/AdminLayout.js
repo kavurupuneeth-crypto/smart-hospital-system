@@ -7,14 +7,14 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/admin' },
-    { label: 'Doctors', icon: '👨⚕️', path: '/admin/doctors' },
-    { label: 'Patients', icon: '👥', path: '/admin/patients' },
-    { label: 'Appointments', icon: '📅', path: '/admin/appointments' },
-    { label: 'Analytics', icon: '📈', path: '/admin/analytics' },
-    { label: 'Resource Management', icon: '🏥', path: '/admin/resources' },
-    { label: 'Control Room', icon: '🎛️', path: '/admin/control-room' },
-    { label: 'Settings', icon: '⚙️', path: '/admin/settings' }
+    { label: 'Dashboard', icon: 'dashboard', path: '/admin' },
+    { label: 'Doctors', icon: 'medical_services', path: '/admin/doctors' },
+    { label: 'Patients', icon: 'group', path: '/admin/patients' },
+    { label: 'Appointments', icon: 'event', path: '/admin/appointments' },
+    { label: 'Analytics', icon: 'analytics', path: '/admin/analytics' },
+    { label: 'Resource Management', icon: 'inventory_2', path: '/admin/resources' },
+    { label: 'Control Room', icon: 'monitoring', path: '/admin/control-room' },
+    { label: 'Settings', icon: 'settings', path: '/admin/settings' }
   ];
 
   return (

@@ -9,12 +9,12 @@ const PatientLayout = () => {
   const { user } = useAuth();
 
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/patient' },
-    { label: 'Appointments', icon: '📅', path: '/patient/appointments' },
-    { label: 'Medical Records', icon: '📋', path: '/patient/records' },
-    { label: 'Bills', icon: '💳', path: '/patient/bills' },
-    { label: 'Medications', icon: '💊', path: '/patient/medications' },
-    { label: 'Settings', icon: '⚙️', path: '/patient/settings' }
+    { label: 'Dashboard', icon: 'dashboard', path: '/patient' },
+    { label: 'Appointments', icon: 'event', path: '/patient/appointments' },
+    { label: 'Medical Records', icon: 'description', path: '/patient/records' },
+    { label: 'Bills', icon: 'receipt_long', path: '/patient/bills' },
+    { label: 'Medications', icon: 'medication', path: '/patient/medications' },
+    { label: 'Settings', icon: 'settings', path: '/patient/settings' }
   ];
 
   return (
