@@ -13,6 +13,7 @@ const PatientDashboard = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [checkInLoading, setCheckInLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState('');
@@ -45,7 +46,16 @@ const PatientDashboard = () => {
 
   const myActiveAppointments = appointments.filter(
     a => a.status !== 'Completed' && a.status !== 'completed' && a.status !== 'Cancelled'
-  );
+  ).sort((a, b) => {
+    // Sort by date first, then by time
+    const dateA = new Date(a.appointmentDate);
+    const dateB = new Date(b.appointmentDate);
+    if (dateA.getTime() !== dateB.getTime()) {
+      return dateA - dateB;
+    }
+    // If same date, sort by slot start time
+    return (a.slotStartTime || '').localeCompare(b.slotStartTime || '');
+  });
 
   const nextAppointment = myActiveAppointments.length > 0 ? myActiveAppointments[0] : null;
 
@@ -106,6 +116,22 @@ const PatientDashboard = () => {
       } finally {
         setLoadingSlots(false);
       }
+    }
+  };
+
+  const handleCheckIn = async (appointmentId) => {
+    setCheckInLoading(true);
+    try {
+      const response = await axiosInstance.put(`/appointments/check-in/${appointmentId}`);
+      if (response.data.success) {
+        setSuccessMessage('✅ Checked in successfully! Please wait for your turn.');
+        setShowSuccessModal(true);
+        await fetchData();
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || 'Check-in failed');
+    } finally {
+      setCheckInLoading(false);
     }
   };
 
@@ -273,20 +299,40 @@ const PatientDashboard = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <button 
-                      onClick={() => handleRescheduleClick(apt)}
-                      className="bg-gray-100 text-gray-700 py-2 px-2 rounded-lg text-xs font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-base">event</span>
-                      Reschedule
-                    </button>
-                    <button 
-                      onClick={() => handleCancelClick(apt)}
-                      className="bg-red-100 text-red-700 py-2 px-2 rounded-lg text-xs font-semibold hover:bg-red-200 transition-colors flex items-center justify-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-base">cancel</span>
-                      Cancel
-                    </button>
+                    {!apt.checkedIn && apt.status === 'Scheduled' && (
+                      <button 
+                        onClick={() => handleCheckIn(apt._id)}
+                        disabled={checkInLoading}
+                        className="bg-green-100 text-green-700 py-2 px-2 rounded-lg text-xs font-semibold hover:bg-green-200 transition-colors flex items-center justify-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-base">check_circle</span>
+                        I'm Here
+                      </button>
+                    )}
+                    {apt.checkedIn && (
+                      <div className="col-span-2 bg-green-50 text-green-700 py-2 px-2 rounded-lg text-xs font-semibold text-center flex items-center justify-center gap-1">
+                        <span className="material-symbols-outlined text-base">verified</span>
+                        Checked In
+                      </div>
+                    )}
+                    {!apt.checkedIn && (
+                      <>
+                        <button 
+                          onClick={() => handleRescheduleClick(apt)}
+                          className="bg-gray-100 text-gray-700 py-2 px-2 rounded-lg text-xs font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
+                        >
+                          <span className="material-symbols-outlined text-base">event</span>
+                          Reschedule
+                        </button>
+                        <button 
+                          onClick={() => handleCancelClick(apt)}
+                          className="bg-red-100 text-red-700 py-2 px-2 rounded-lg text-xs font-semibold hover:bg-red-200 transition-colors flex items-center justify-center gap-1"
+                        >
+                          <span className="material-symbols-outlined text-base">cancel</span>
+                          Cancel
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               );
