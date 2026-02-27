@@ -1,104 +1,187 @@
 import React, { useState } from 'react';
 
+const MOCK_QUEUE = [
+  { _id: '1', patientName: 'Rajesh Kumar', doctorName: 'Dr. Sarah Johnson', department: 'Cardiology', queuePosition: 1, slotTime: '10:00 AM', status: 'In Progress', checkedIn: true, estimatedWait: 5 },
+  { _id: '2', patientName: 'Priya Sharma', doctorName: 'Dr. Sarah Johnson', department: 'Cardiology', queuePosition: 2, slotTime: '10:30 AM', status: 'Waiting', checkedIn: true, estimatedWait: 35 },
+  { _id: '3', patientName: 'Amit Patel', doctorName: 'Dr. Robert Chen', department: 'Orthopedics', queuePosition: 1, slotTime: '10:15 AM', status: 'Waiting', checkedIn: true, estimatedWait: 15 },
+  { _id: '4', patientName: 'Sneha Reddy', doctorName: 'Dr. Emily White', department: 'Pediatrics', queuePosition: 1, slotTime: '11:00 AM', status: 'Waiting', checkedIn: true, estimatedWait: 60 },
+  { _id: '5', patientName: 'Vikram Singh', doctorName: 'Dr. Sarah Johnson', department: 'Cardiology', queuePosition: 3, slotTime: '11:00 AM', status: 'Scheduled', checkedIn: false, estimatedWait: 65 },
+  { _id: '6', patientName: 'Ananya Iyer', doctorName: 'Dr. Robert Chen', department: 'Orthopedics', queuePosition: 2, slotTime: '10:45 AM', status: 'Scheduled', checkedIn: false, estimatedWait: 45 },
+];
+
 const WaitingQueue = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [queue, setQueue] = useState(MOCK_QUEUE);
+  const [filterDepartment, setFilterDepartment] = useState('All');
 
-  const queueData = [
-    { id: 1, waitNo: 'WL-001', patient: 'Suresh Babu', bloodGroup: 'O+', dept: 'Cardiology', doctor: 'Dr. Sarah Johnson', level: 'Critical', waitTime: 8 },
-    { id: 2, waitNo: 'WL-002', patient: 'Divya Menon', bloodGroup: 'A-', dept: 'General Medicine', doctor: 'Dr. Arjun Mehta', level: 'Critical', waitTime: 11 },
-    { id: 3, waitNo: 'WL-003', patient: 'Vikram Singh', bloodGroup: 'B+', dept: 'Orthopedics', doctor: 'Dr. Robert Chen', level: 'Critical', waitTime: 15 },
-    { id: 4, waitNo: 'WL-004', patient: 'Priya Das', bloodGroup: 'AB+', dept: 'Cardiology', doctor: 'Dr. Priya Nair', level: 'High', waitTime: 22 },
-    { id: 5, waitNo: 'WL-005', patient: 'Rajan Kumar', bloodGroup: 'B+', dept: 'Pediatrics', doctor: 'Dr. Emily White', level: 'High', waitTime: 28 },
-    { id: 6, waitNo: 'WL-006', patient: 'Meera Iyer', bloodGroup: 'O-', dept: 'General Medicine', doctor: 'Dr. Kavita Shah', level: 'High', waitTime: 33 },
-    { id: 7, waitNo: 'WL-007', patient: 'Ajay Patel', bloodGroup: 'A+', dept: 'Orthopedics', doctor: 'Dr. James Osei', level: 'High', waitTime: 40 },
-    { id: 8, waitNo: 'WL-008', patient: 'Sneha Gupta', bloodGroup: 'B-', dept: 'Cardiology', doctor: 'Dr. Sarah Johnson', level: 'High', waitTime: 45 }
-  ];
+  const departments = ['All', 'Cardiology', 'Orthopedics', 'Pediatrics'];
+  
+  const filteredQueue = filterDepartment === 'All' 
+    ? queue 
+    : queue.filter(item => item.department === filterDepartment);
 
-  const filteredQueue = activeFilter === 'All' 
-    ? queueData 
-    : queueData.filter(item => item.level === activeFilter);
-
-  const getLevelStyle = (level) => {
-    if (level === 'Critical') return 'bg-red-100 text-red-700';
-    if (level === 'High') return 'bg-orange-100 text-orange-700';
-    if (level === 'Medium') return 'bg-yellow-100 text-yellow-700';
-    return 'bg-green-100 text-green-700';
-  };
-
-  const getLevelIcon = (level) => {
-    if (level === 'Critical') return '⚠️';
-    if (level === 'High') return '⚡';
-    return '✓';
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'In Progress': return 'bg-green-100 text-green-700';
+      case 'Waiting': return 'bg-yellow-100 text-yellow-700';
+      case 'Scheduled': return 'bg-blue-100 text-blue-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-white rounded-3xl shadow-md p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Today's Waiting Queue</h1>
-          
-          {/* Filter Pills */}
-          <div className="flex gap-2">
-            {['All', 'Critical', 'High', 'Medium', 'Low'].map(filter => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  activeFilter === filter
-                    ? 'bg-teal-500 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
+    <div className="p-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2">Waiting Queue</h1>
+        <p className="text-gray-600">Real-time patient queue monitoring</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-green-100 text-sm">In Progress</p>
+              <p className="text-3xl font-bold mt-1">{queue.filter(q => q.status === 'In Progress').length}</p>
+            </div>
+            <span className="material-symbols-rounded text-[48px] opacity-30">medical_services</span>
           </div>
         </div>
+        <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-yellow-100 text-sm">Waiting</p>
+              <p className="text-3xl font-bold mt-1">{queue.filter(q => q.status === 'Waiting').length}</p>
+            </div>
+            <span className="material-symbols-rounded text-[48px] opacity-30">hourglass_empty</span>
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-blue-100 text-sm">Scheduled</p>
+              <p className="text-3xl font-bold mt-1">{queue.filter(q => q.status === 'Scheduled').length}</p>
+            </div>
+            <span className="material-symbols-rounded text-[48px] opacity-30">event</span>
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-purple-100 text-sm">Total Queue</p>
+              <p className="text-3xl font-bold mt-1">{queue.length}</p>
+            </div>
+            <span className="material-symbols-rounded text-[48px] opacity-30">groups</span>
+          </div>
+        </div>
+      </div>
 
-        {/* Table */}
+      {/* Department Filter */}
+      <div className="mb-6 flex gap-2">
+        {departments.map(dept => (
+          <button
+            key={dept}
+            onClick={() => setFilterDepartment(dept)}
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              filterDepartment === dept
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            {dept}
+          </button>
+        ))}
+      </div>
+
+      {/* Queue Table */}
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">#</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Wait No.</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Patient Name</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Blood Group</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Department</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Doctor</th>
-                <th className="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Emergency Level</th>
-                <th className="text-right py-4 px-4 text-xs font-semibold text-gray-500 uppercase">Wait Time</th>
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Queue #</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Patient</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Doctor</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Department</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Slot Time</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Wait Time</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200">
               {filteredQueue.map((item) => (
-                <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                  <td className="py-4 px-4 text-sm text-gray-600">{item.id}</td>
-                  <td className="py-4 px-4 text-sm font-semibold text-gray-900">{item.waitNo}</td>
-                  <td className="py-4 px-4 text-sm text-gray-800">{item.patient}</td>
-                  <td className="py-4 px-4">
-                    <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">
-                      {item.bloodGroup}
+                <tr key={item._id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full text-blue-600 font-bold">
+                      {item.queuePosition}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-semibold">
+                        {item.patientName.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">{item.patientName}</div>
+                        {item.checkedIn && (
+                          <div className="flex items-center gap-1 text-xs text-green-600">
+                            <span className="material-symbols-rounded text-[14px]">check_circle</span>
+                            Checked In
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-900">{item.doctorName}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                      {item.department}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-sm text-gray-600">{item.dept}</td>
-                  <td className="py-4 px-4 text-sm text-gray-600">{item.doctor}</td>
-                  <td className="py-4 px-4">
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getLevelStyle(item.level)}`}>
-                      <span>{getLevelIcon(item.level)}</span>
-                      {item.level}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-900">
+                      <span className="material-symbols-rounded text-[18px] text-gray-400">schedule</span>
+                      {item.slotTime}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(item.status)}`}>
+                      {item.status}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-right">
-                    <span className="text-sm font-bold text-gray-900">{item.waitTime}</span>
-                    <span className="text-sm text-gray-500 ml-1">min</span>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-900">
+                      <span className="material-symbols-rounded text-[18px] text-gray-400">timer</span>
+                      ~{item.estimatedWait} min
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      {item.status === 'Waiting' && (
+                        <button className="px-2.5 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-xs font-medium flex items-center gap-1">
+                          <span className="material-symbols-rounded text-[16px]">call</span>
+                          Call
+                        </button>
+                      )}
+                      <button className="p-1.5 text-gray-600 hover:bg-gray-50 rounded-md transition-colors">
+                        <span className="material-symbols-rounded text-[18px]">more_vert</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {filteredQueue.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            <span className="material-symbols-rounded text-[64px] text-gray-300">event_busy</span>
+            <p className="mt-4">No patients in queue for {filterDepartment}</p>
+          </div>
+        )}
       </div>
     </div>
   );

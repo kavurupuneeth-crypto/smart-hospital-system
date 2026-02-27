@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 const AdminSettings = () => {
   const { theme, applyTheme } = useTheme();
-  const [selectedTheme, setSelectedTheme] = useState(theme);
 
-  const handleApplyTheme = () => {
-    applyTheme(selectedTheme);
-  };
   return (
     <div>
       <div className="mb-8">
@@ -23,15 +19,15 @@ const AdminSettings = () => {
           <div className="grid grid-cols-3 gap-4">
             {/* Default Theme */}
             <div
-              onClick={() => setSelectedTheme('default')}
+              onClick={() => applyTheme('default')}
               className={`cursor-pointer border-2 rounded-xl p-4 transition-all ${
-                selectedTheme === 'default' ? 'border-teal-500 bg-teal-50' : 'border-gray-200 hover:border-gray-300'
+                theme === 'default' ? 'border-blue-500 bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-900">Default</h4>
-                {selectedTheme === 'default' && (
-                  <span className="text-teal-500">✓</span>
+                {theme === 'default' && (
+                  <span className="material-symbols-rounded text-blue-500 text-[24px]">check_circle</span>
                 )}
               </div>
               <div className="space-y-2">
@@ -44,15 +40,15 @@ const AdminSettings = () => {
 
             {/* Light Theme */}
             <div
-              onClick={() => setSelectedTheme('light')}
+              onClick={() => applyTheme('light')}
               className={`cursor-pointer border-2 rounded-xl p-4 transition-all ${
-                selectedTheme === 'light' ? 'border-teal-500 bg-teal-50' : 'border-gray-200 hover:border-gray-300'
+                theme === 'light' ? 'border-blue-500 bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-900">Light</h4>
-                {selectedTheme === 'light' && (
-                  <span className="text-teal-500">✓</span>
+                {theme === 'light' && (
+                  <span className="material-symbols-rounded text-blue-500 text-[24px]">check_circle</span>
                 )}
               </div>
               <div className="space-y-2">
@@ -65,15 +61,15 @@ const AdminSettings = () => {
 
             {/* Dark Theme */}
             <div
-              onClick={() => setSelectedTheme('dark')}
+              onClick={() => applyTheme('dark')}
               className={`cursor-pointer border-2 rounded-xl p-4 transition-all ${
-                selectedTheme === 'dark' ? 'border-teal-500 bg-teal-50' : 'border-gray-200 hover:border-gray-300'
+                theme === 'dark' ? 'border-blue-500 bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-900">Dark</h4>
-                {selectedTheme === 'dark' && (
-                  <span className="text-teal-500">✓</span>
+                {theme === 'dark' && (
+                  <span className="material-symbols-rounded text-blue-500 text-[24px]">check_circle</span>
                 )}
               </div>
               <div className="space-y-2">
@@ -85,9 +81,14 @@ const AdminSettings = () => {
             </div>
           </div>
 
-          <button onClick={handleApplyTheme} className="mt-6 bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition">
-            Apply Theme
-          </button>
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-rounded text-blue-600">info</span>
+              <p className="text-sm text-gray-700">
+                <strong>Active theme:</strong> {theme.charAt(0).toUpperCase() + theme.slice(1)} - Click any theme to apply instantly
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-md p-6">

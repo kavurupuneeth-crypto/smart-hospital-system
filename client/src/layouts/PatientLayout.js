@@ -10,9 +10,9 @@ const PatientLayout = () => {
 
   const menuItems = [
     { label: 'Dashboard', icon: 'dashboard', path: '/patient' },
-    { label: 'Appointments', icon: 'event', path: '/patient/appointments' },
+    { label: 'My Appointments', icon: 'event', path: '/patient/appointments' },
     { label: 'Medical Records', icon: 'description', path: '/patient/records' },
-    { label: 'Bills', icon: 'receipt_long', path: '/patient/bills' },
+    { label: 'Bills & Payments', icon: 'receipt_long', path: '/patient/bills' },
     { label: 'Medications', icon: 'medication', path: '/patient/medications' },
     { label: 'Settings', icon: 'settings', path: '/patient/settings' }
   ];
