@@ -18,7 +18,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['patient', 'admin'],
     default: 'patient'
-  }
+  },
+  phone: String,
+  dateOfBirth: Date,
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other']
+  },
+  address: String,
+  bloodGroup: String,
+  emergencyContact: String
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

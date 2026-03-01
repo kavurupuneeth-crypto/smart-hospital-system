@@ -3,7 +3,7 @@ const Appointment = require('../models/Appointment');
 
 exports.getAllDoctors = async (req, res) => {
   try {
-    const doctors = await Doctor.find({ isAvailable: true }).populate('userId', 'name email');
+    const doctors = await Doctor.find({});
     res.json({ doctors });
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch doctors', error: error.message });
@@ -12,7 +12,7 @@ exports.getAllDoctors = async (req, res) => {
 
 exports.getDoctorById = async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.params.id).populate('userId', 'name email');
+    const doctor = await Doctor.findById(req.params.id);
     if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found' });
     }

@@ -24,6 +24,12 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  slotStartTime: {
+    type: String
+  },
+  slotEndTime: {
+    type: String
+  },
   appointmentDate: {
     type: Date,
     required: true
@@ -36,10 +42,39 @@ const appointmentSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  consultationStartTime: {
+    type: Date
+  },
+  consultationDuration: {
+    type: Number
+  },
+  bookingType: {
+    type: String,
+    enum: ['self', 'other'],
+    default: 'self'
+  },
+  patientDetails: {
+    name: String,
+    age: Number,
+    gender: String,
+    phone: String,
+    relation: String
+  },
+  reason: String,
   status: {
     type: String,
-    enum: ['Waiting', 'In Consultation', 'completed', 'Cancelled'],
-    default: 'Waiting'
+    enum: ['Scheduled', 'Waiting', 'In Consultation', 'Completed', 'completed', 'Cancelled', 'No Show'],
+    default: 'Scheduled'
+  },
+  checkedIn: {
+    type: Boolean,
+    default: false
+  },
+  checkInTime: {
+    type: Date
+  },
+  cancelledAt: {
+    type: Date
   },
   createdAt: {
     type: Date,

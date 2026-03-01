@@ -110,3 +110,30 @@ exports.getAverageWaitingTime = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getPatientDashboardStats = async (req, res) => {
+  try {
+    const total = await Appointment.countDocuments({
+      patientId: req.user.id
+    });
+
+    const active = await Appointment.countDocuments({
+      patientId: req.user.id,
+      status: { $in: ['Scheduled', 'In Consultation'] }
+    });
+
+    const completed = await Appointment.countDocuments({
+      patientId: req.user.id,
+      status: { $in: ['Completed', 'completed'] }
+    });
+
+    const upcoming = await Appointment.countDocuments({
+      patientId: req.user.id,
+      status: 'Scheduled'
+    });
+
+    res.json({ total, active, completed, upcoming });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

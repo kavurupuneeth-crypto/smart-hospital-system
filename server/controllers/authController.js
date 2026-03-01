@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, phone, role } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -17,6 +17,7 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      phone,
       role
     });
 
@@ -42,7 +43,7 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, requestedRole } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -52,6 +53,13 @@ exports.loginUser = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Validate role matches the portal
+    if (requestedRole && user.role !== requestedRole) {
+      return res.status(403).json({ 
+        message: `Access denied. This account is registered as ${user.role}. Please use the ${user.role} portal.` 
+      });
     }
 
     const token = jwt.sign(
@@ -69,6 +77,54 @@ exports.loginUser = async (req, res) => {
         role: user.role
       }
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, phone, dateOfBirth, gender, address, bloodGroup, emergencyContact } = req.body;
+    
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, phone, dateOfBirth, gender, address, bloodGroup, emergencyContact },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update localStorage name if changed
+    res.json({ 
+      success: true,
+      message: 'Profile updated successfully',
+      user 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const { role } = req.query;
+    const filter = role ? { role } : {};
+    const users = await User.find(filter).select('-password').sort({ createdAt: -1 });
+    res.json({ users });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
